@@ -4,31 +4,32 @@ metadata:
   name: mysql
   namespace: devops-exam
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mysql
-  replicas: 1
   template:
     metadata:
       labels:
         app: mysql
     spec:
       containers:
-        - name: mysql
-          image: mysql:5.7
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "rootpass"
-            - name: MYSQL_DATABASE
-              value: "devops_exam"
-          ports:
-            - containerPort: 3306
-          volumeMounts:
-            - name: mysql-persistent-storage
-              mountPath: /var/lib/mysql
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootpassword
+        - name: MYSQL_DATABASE
+          value: devops_exam
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: initdb
+          mountPath: /docker-entrypoint-initdb.d
       volumes:
-        - name: mysql-persistent-storage
-          emptyDir: {}
+      - name: initdb
+        configMap:
+          name: mysql-initdb-config
 ---
 apiVersion: v1
 kind: Service
@@ -36,8 +37,8 @@ metadata:
   name: mysql
   namespace: devops-exam
 spec:
-  type: ClusterIP
-  ports:
-    - port: 3306
   selector:
     app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
