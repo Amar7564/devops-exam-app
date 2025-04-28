@@ -39,10 +39,10 @@ spec:
       volumes:
         - name: flask-volume
           hostPath:
-            path: ./backend
+            path: /home/ubuntu/backend
         - name: frontend-volume
           hostPath:
-            path: ./frontend
+            path: /home/ubuntu/frontend
 ---
 apiVersion: v1
 kind: Service
