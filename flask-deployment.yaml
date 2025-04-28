@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: your-dockerhub-username/devops-exam-backend:latest  # <-- Update your image
+        image: 289095007317.dkr.ecr.ap-south-1.amazonaws.com/devopsexam:latest
         env:
         - name: DB_HOST
           value: mysql
